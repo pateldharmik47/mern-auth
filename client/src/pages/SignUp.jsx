@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
     const [formData, setFormData] = useState({});
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value })
     }
@@ -28,6 +30,7 @@ const SignUp = () => {
                 setError(true);
                 return;
             }
+            navigate("/sign-in");
         } catch (error) {
             setLoading(false);
             setError(true);
@@ -68,7 +71,6 @@ const SignUp = () => {
                     <span className="text-blue-500 cursor-pointer">Sign in</span>
                 </Link>
             </div>
-            {console.log("error", error)}
             <p className="text-red-500 mt-5">
                 {error && "Something went wrong"}
             </p>
