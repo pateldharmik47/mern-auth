@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { updateUserFailure, updateUserStart, updateUserSuccess, deleteUserStart, deleteUserSuccess, deleteUserFailure } from '../redux/user/userSlice'
+import { updateUserFailure, updateUserStart, updateUserSuccess, deleteUserStart, deleteUserSuccess, deleteUserFailure, signOut } from '../redux/user/userSlice'
 
 const Profile = () => {
     const { currentUser, loading, error } = useSelector(state => state.user);
@@ -145,6 +145,17 @@ const Profile = () => {
             log.error("Error deleting account", error);
         }
     }
+
+    const handleSignOut = async () => {
+        try {
+            await fetch("/api/auth/signout", {
+                method: "GET",
+            });
+            dispatch(signOut());
+        } catch (error) {
+            log.error("Error signing out", error);
+        }
+    }
     return (
         <div className="p-3 max-w-lg mx-auto">
             <h1 className="text-3xl font-semibold text-center my-7"> Profile </h1>
@@ -176,7 +187,7 @@ const Profile = () => {
 
             <div className="flex justify-between mt-5">
                 <span className="text-red-700 cursor-pointer" onClick={() => handleDeleteAccount()}>Delete Account</span>
-                <span className="text-red-700 cursor-pointer">Sign Out</span>
+                <span className="text-red-700 cursor-pointer" onClick={() => handleSignOut()}>Sign Out</span>
             </div>
             <p className="text-red-700 mt-5">{error && "Something went wrong"}</p>
             <p className="text-green-700 mt-5">{updateUserSuccess && "User is updated successfully"}</p>
